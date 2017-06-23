@@ -1,4 +1,5 @@
-// Go library for cropping images by removing borders with specified color.
+// Package colorcrop is a Go library for cropping images by removing borders
+// with specified color.
 package colorcrop
 
 import (
@@ -11,7 +12,7 @@ func Crop(img image.Image, color color.Color, thresold float64) image.Image {
 	return CropWithComparator(img, color, thresold, CmpRGBComponentsDiff)
 }
 
-// Crop returns cropped image with specified comparator.
+// CropWithComparator returns cropped image with specified comparator.
 func CropWithComparator(img image.Image, color color.Color, thresold float64, comparator comparator) image.Image {
 	return img.(interface {
 		SubImage(r image.Rectangle) image.Image
