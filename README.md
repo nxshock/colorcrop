@@ -1,6 +1,6 @@
 # colorcrop
 
-Go library for cropping images by removing borders with specified color.
+A Go library for cropping images by removing borders with specified color.
 
 ## Installation
 
@@ -10,7 +10,9 @@ Go library for cropping images by removing borders with specified color.
 
 Crop white borders with 50% of thresold:
 
-`croppedImage := colorcrop.Crop(sourceImage, color.RGBA{255, 255, 255, 255}, 0.5)`
+```go
+croppedImage := colorcrop.Crop(sourceImage, color.RGBA{255, 255, 255, 255}, 0.5)
+```
 
 ## Examples
 
