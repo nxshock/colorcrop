@@ -1,12 +1,18 @@
 # colorcrop
 
-A Go library for cropping images by removing borders with specified color.
+A pure Go library for cropping images by removing borders with specified color.
 
 ## Installation
 
 `go get -u github.com/nxshock/colorcrop`
 
 ## Usage
+
+Import package with
+
+```go
+import "github.com/nxshock/colorcrop"
+```
 
 Crop white borders with 50% of thresold:
 
