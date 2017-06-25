@@ -13,7 +13,7 @@ func TestColorComparators(t *testing.T) {
 		color2 color.Color
 	}
 
-	comparators := []comparator{CmpSquareRGBComponentsDiff, CmpRGBComponentsDiff}
+	comparators := []comparator{CmpEuclidean, CmpRGBComponents}
 
 	tests := []struct {
 		in         In
@@ -33,8 +33,8 @@ func TestColorComparators(t *testing.T) {
 
 	for _, comparator := range comparators {
 		for _, test := range tests {
-			if CmpSquareRGBComponentsDiff(test.in.color2, test.in.color1) != test.out {
-				t.Errorf("%s: %s: expected %.2f, got %.2f", runtime.FuncForPC(reflect.ValueOf(comparator).Pointer()).Name(), test.commentary, test.out, CmpSquareRGBComponentsDiff(test.in.color2, test.in.color1))
+			if comparator(test.in.color2, test.in.color1) != test.out {
+				t.Errorf("%s: %s: expected %.2f, got %.2f", runtime.FuncForPC(reflect.ValueOf(comparator).Pointer()).Name(), test.commentary, test.out, comparator(test.in.color2, test.in.color1))
 			}
 		}
 	}

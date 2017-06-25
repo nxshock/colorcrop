@@ -14,10 +14,16 @@ Import package with
 import "github.com/nxshock/colorcrop"
 ```
 
-Crop white borders with 50% of thresold:
+Crop **white** borders with **50%** of thresold:
 
 ```go
 croppedImage := colorcrop.Crop(sourceImage, color.RGBA{255, 255, 255, 255}, 0.5)
+```
+
+You may use custom comparator of colors:
+
+```go
+croppedImage := colorcrop.CropWithComparator(sourceImage, color.RGBA{255, 255, 255, 255}, 0.5, colorcrop.CmpCIE76)
 ```
 
 ## Examples

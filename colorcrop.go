@@ -9,7 +9,7 @@ import (
 
 // Crop returns cropped image with default comparator.
 func Crop(img image.Image, color color.Color, thresold float64) image.Image {
-	return CropWithComparator(img, color, thresold, CmpRGBComponentsDiff)
+	return CropWithComparator(img, color, thresold, CmpRGBComponents)
 }
 
 // CropWithComparator returns cropped image with specified comparator.
