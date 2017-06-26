@@ -5,10 +5,13 @@ import (
 	"math"
 )
 
-func rgbtoXYZ(r, g, b uint32) (x, y, z float64) {
-	varR := float64(r) / 255
-	varG := float64(g) / 255
-	varB := float64(b) / 255
+// colorToXYZ returns CIE XYZ representation of color.
+// https://en.wikipedia.org/wiki/Color_model#CIE_XYZ_color_space
+func colorToXYZ(color color.Color) (x, y, z float64) {
+	r, g, b, _ := color.RGBA()
+	varR := float64(r>>8) / 255
+	varG := float64(g>>8) / 255
+	varB := float64(b>>8) / 255
 
 	if varR > 0.04045 {
 		varR = math.Pow((varR+0.055)/1.055, 2.4)
@@ -28,16 +31,15 @@ func rgbtoXYZ(r, g, b uint32) (x, y, z float64) {
 		varB = varB / 12.92
 	}
 
-	varR = varR * 100
-	varG = varG * 100
-	varB = varB * 100
+	x = varR*41.24 + varG*35.76 + varB*18.05
+	y = varR*21.26 + varG*71.52 + varB*7.22
+	z = varR*1.93 + varG*11.92 + varB*95.05
 
-	x = varR*0.4124 + varG*0.3576 + varB*0.1805
-	y = varR*0.2126 + varG*0.7152 + varB*0.0722
-	z = varR*0.0193 + varG*0.1192 + varB*0.9505
 	return x, y, z
 }
 
+// xyztoLAB converts CIE XYZ color space to CIE LAB color space
+// https://en.wikipedia.org/wiki/Lab_color_space#CIELAB-CIEXYZ_conversions
 func xyztoLAB(x, y, z float64) (l, a, b float64) {
 	refX, refY, refZ := 95.047, 100.000, 108.883 // Daylight, sRGB, Adobe-RGB, Observer D65, 2°
 
@@ -68,7 +70,8 @@ func xyztoLAB(x, y, z float64) (l, a, b float64) {
 	return l, a, b
 }
 
+// colorToLAB returns LAB representation of any color (without aplha)
+// https://en.wikipedia.org/wiki/Lab_color_space
 func colorToLAB(color color.Color) (l, a, b float64) {
-	cr, cg, cb, _ := color.RGBA()
-	return xyztoLAB(rgbtoXYZ(cr, cg, cb))
+	return xyztoLAB(colorToXYZ(color))
 }

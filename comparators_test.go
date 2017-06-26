@@ -2,40 +2,102 @@ package colorcrop
 
 import (
 	"image/color"
-	"reflect"
-	"runtime"
+	"math"
 	"testing"
 )
 
-func TestColorComparators(t *testing.T) {
-	type In struct {
-		color1 color.Color
-		color2 color.Color
-	}
-
+func TestLinearComparators(t *testing.T) {
 	comparators := []comparator{CmpEuclidean, CmpRGBComponents}
 
 	tests := []struct {
-		in         In
-		out        float64
-		commentary string
+		color1   color.Color
+		color2   color.Color
+		expected float64
+		got      float64
 	}{
-		{in: In{color.RGBA{0, 0, 0, 255}, color.RGBA{255, 255, 255, 255}},
-			out:        1.00,
-			commentary: "Difference between black and white colors"},
-		{in: In{color.RGBA{255, 255, 255, 255}, color.RGBA{255, 255, 255, 255}},
-			out:        0.00,
-			commentary: "Difference between same colors"},
-		{in: In{color.RGBA{255, 255, 255, 0}, color.RGBA{255, 255, 255, 255}},
-			out:        0.00,
-			commentary: "Difference between same colors with different transparency"},
+		{color1: color.RGBA{0, 0, 0, 255}, color2: color.RGBA{0, 0, 0, 255}, expected: 0.00},             // same black colors
+		{color1: color.RGBA{255, 255, 255, 255}, color2: color.RGBA{255, 255, 255, 255}, expected: 0.00}, // same white colors
+		{color1: color.RGBA{0, 0, 0, 255}, color2: color.RGBA{255, 255, 255, 255}, expected: 1.00},       // different (black and white) colors
+		{color1: color.RGBA{255, 255, 255, 255}, color2: color.RGBA{0, 0, 0, 255}, expected: 1.00},       // different (white and black) colors
+		{color1: color.RGBA{255, 255, 255, 0}, color2: color.RGBA{255, 255, 255, 255}, expected: 0.00},   // must ignore alpha channel
 	}
 
 	for _, comparator := range comparators {
 		for _, test := range tests {
-			if comparator(test.in.color2, test.in.color1) != test.out {
-				t.Errorf("%s: %s: expected %.2f, got %.2f", runtime.FuncForPC(reflect.ValueOf(comparator).Pointer()).Name(), test.commentary, test.out, comparator(test.in.color2, test.in.color1))
+			test.got = comparator(test.color1, test.color2)
+			if math.Abs(test.got-test.expected) > epsilon {
+				t.Errorf("%v %v: expected %.8f, got %.8f", test.color1, test.color2, test.expected, test.got)
 			}
+		}
+	}
+}
+
+func TestCmpCIE76(t *testing.T) {
+	type test struct {
+		color1   color.Color
+		color2   color.Color
+		expected float64
+		got      float64
+	}
+
+	tests := []test{
+		{color1: color.RGBA{0, 0, 0, 255}, color2: color.RGBA{0, 0, 0, 255}, expected: 0.00000000 / 149.95514755},             // same black colors
+		{color1: color.RGBA{255, 255, 255, 255}, color2: color.RGBA{255, 255, 255, 255}, expected: 0.00000000 / 149.95514755}, // same white colors
+		{color1: color.RGBA{0, 0, 0, 255}, color2: color.RGBA{255, 255, 255, 255}, expected: 100.00000068 / 149.95514755},     // different (black and white) colors
+		{color1: color.RGBA{255, 255, 255, 255}, color2: color.RGBA{0, 0, 0, 255}, expected: 100.00000068 / 149.95514755},     // different (white and black) colors
+		{color1: color.RGBA{255, 0, 0, 255}, color2: color.RGBA{255, 255, 255, 255}, expected: 114.55897602 / 149.95514755},   // different (red and white) colors
+		{color1: color.RGBA{0, 255, 0, 255}, color2: color.RGBA{255, 255, 255, 255}, expected: 120.41559907 / 149.95514755},   // different (green and white) colors
+		{color1: color.RGBA{0, 0, 255, 255}, color2: color.RGBA{255, 255, 255, 255}, expected: 149.95514755 / 149.95514755},   // different (blue and white) colors
+	}
+
+	for _, test := range tests {
+		test.got = CmpCIE76(test.color1, test.color2)
+		if math.Abs(test.got-test.expected) > epsilon {
+			t.Errorf("%v %v: expected %.8f, got %.8f", test.color1, test.color2, test.expected, test.got)
+		}
+	}
+}
+
+func TestMin(t *testing.T) {
+	type test struct {
+		x        uint32
+		y        uint32
+		expected uint32
+		got      uint32
+	}
+
+	tests := []test{
+		{x: 1, y: 2, expected: 1},
+		{x: 3, y: 2, expected: 2},
+		{x: 4, y: 4, expected: 4},
+	}
+
+	for _, test := range tests {
+		test.got = min(test.x, test.y)
+		if test.got != test.expected {
+			t.Errorf("min(%d, %d): expected %d, got %d", test.x, test.y, test.expected, test.got)
+		}
+	}
+}
+
+func TestMax(t *testing.T) {
+	type test struct {
+		x        uint32
+		y        uint32
+		expected uint32
+		got      uint32
+	}
+
+	tests := []test{
+		{x: 1, y: 2, expected: 2},
+		{x: 3, y: 2, expected: 3},
+		{x: 4, y: 4, expected: 4},
+	}
+
+	for _, test := range tests {
+		test.got = max(test.x, test.y)
+		if test.got != test.expected {
+			t.Errorf("max(%d, %d): expected %d, got %d", test.x, test.y, test.expected, test.got)
 		}
 	}
 }
