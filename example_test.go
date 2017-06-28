@@ -1,6 +1,3 @@
-// Copyright 2012 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
 package colorcrop_test
 
 import (
@@ -12,7 +9,7 @@ import (
 	"github.com/nxshock/colorcrop"
 )
 
-func ExampleBasicUsage() {
+func ExampleCrop() {
 	log.SetFlags(0)
 
 	// Read source image
@@ -34,7 +31,7 @@ func ExampleBasicUsage() {
 	png.Encode(croppedFile, croppedImage)
 }
 
-func ExampleCustomComparator() {
+func ExampleCropWithComparator() {
 	log.SetFlags(0)
 
 	// Read source image
