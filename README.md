@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/nxshock/colorcrop.svg?branch=master)](https://travis-ci.org/nxshock/colorcrop)
 [![Coverage Status](https://coveralls.io/repos/github/nxshock/colorcrop/badge.svg)](https://coveralls.io/github/nxshock/colorcrop)
+[![GoDoc](https://godoc.org/github.com/nxshock/colorcrop?status.svg)](https://godoc.org/github.com/nxshock/colorcrop)
 
 A pure Go library for cropping images by removing borders with specified color.
 
