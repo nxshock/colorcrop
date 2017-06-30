@@ -3,7 +3,6 @@ package colorcrop_test
 import (
 	"image/color"
 	"image/png"
-	"log"
 	"os"
 
 	"github.com/nxshock/colorcrop"
@@ -11,8 +10,6 @@ import (
 
 // Simple remove of white borders.
 func ExampleCrop() {
-	log.SetFlags(0)
-
 	// Read source image
 	sourceFile, _ := os.Open("img.png")
 	defer sourceFile.Close()
@@ -34,8 +31,6 @@ func ExampleCrop() {
 
 // Remove white borders with custom color comparator.
 func ExampleCropWithComparator() {
-	log.SetFlags(0)
-
 	// Read source image
 	sourceFile, _ := os.Open("img.png")
 	defer sourceFile.Close()
