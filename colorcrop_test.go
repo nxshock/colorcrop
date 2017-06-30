@@ -62,6 +62,103 @@ func TestCropRectanle(t *testing.T) {
 	}
 }
 
+func TestCropWithComparator(t *testing.T) {
+	type test struct {
+		filename                      string
+		expectedWidth, expectedHeight int
+		gotWidth, gotHeight           int
+	}
+
+	comparators := []comparator{CmpRGBComponents, CmpEuclidean, CmpCIE76}
+	thresold := 0.5
+	color := color.RGBA{255, 255, 255, 255}
+
+	tests := []test{
+		{filename: "01.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "02.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "03.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "04.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "05.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "06.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "07.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "08.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "09.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "10.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "11.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "12.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "13.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "14.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "15.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "16.png", expectedWidth: 1, expectedHeight: 1},
+	}
+
+	for _, comparator := range comparators {
+		for _, test := range tests {
+			file, err := os.Open("testimages/" + test.filename)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer file.Close()
+			image, err := png.Decode(file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			newImage := CropWithComparator(image, color, thresold, comparator)
+			test.gotWidth, test.gotHeight = getImageSize(newImage)
+			if test.gotWidth != test.expectedWidth || test.gotHeight != test.expectedWidth {
+				t.Errorf("expected {%d %d}, got {%d %d} for comparator: %s, file: %s", test.expectedWidth, test.expectedWidth, test.gotWidth, test.gotHeight, getFuncName(comparator), test.filename)
+			}
+		}
+	}
+}
+
+func TestCrop(t *testing.T) {
+	type test struct {
+		filename                      string
+		expectedWidth, expectedHeight int
+		gotWidth, gotHeight           int
+	}
+
+	thresold := 0.5
+	color := color.RGBA{255, 255, 255, 255}
+
+	tests := []test{
+		{filename: "01.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "02.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "03.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "04.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "05.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "06.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "07.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "08.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "09.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "10.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "11.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "12.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "13.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "14.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "15.png", expectedWidth: 1, expectedHeight: 1},
+		{filename: "16.png", expectedWidth: 1, expectedHeight: 1},
+	}
+
+	for _, test := range tests {
+		file, err := os.Open("testimages/" + test.filename)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer file.Close()
+		image, err := png.Decode(file)
+		if err != nil {
+			t.Fatal(err)
+		}
+		newImage := Crop(image, color, thresold)
+		test.gotWidth, test.gotHeight = getImageSize(newImage)
+		if test.gotWidth != test.expectedWidth || test.gotHeight != test.expectedWidth {
+			t.Errorf("expected {%d %d}, got {%d %d} for file: %s", test.expectedWidth, test.expectedWidth, test.gotWidth, test.gotHeight, test.filename)
+		}
+	}
+}
+
 func getFuncName(i interface{}) string {
 	s := runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
 	p := strings.LastIndex(s, ".")
@@ -69,4 +166,8 @@ func getFuncName(i interface{}) string {
 		return string([]rune(s)[p+1:])
 	}
 	return s
+}
+
+func getImageSize(image image.Image) (width, height int) {
+	return image.Bounds().Dx(), image.Bounds().Dy()
 }
