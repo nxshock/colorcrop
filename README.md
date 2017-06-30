@@ -39,4 +39,4 @@ croppedImage := colorcrop.CropWithComparator(
 
 ## Examples
 
-See in "examples".
+See [here](https://github.com/nxshock/colorcrop/blob/master/example_test.go).

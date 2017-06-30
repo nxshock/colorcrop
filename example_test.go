@@ -9,6 +9,7 @@ import (
 	"github.com/nxshock/colorcrop"
 )
 
+// Simple remove of white borders.
 func ExampleCrop() {
 	log.SetFlags(0)
 
@@ -31,6 +32,7 @@ func ExampleCrop() {
 	png.Encode(croppedFile, croppedImage)
 }
 
+// Remove white borders with custom color comparator.
 func ExampleCropWithComparator() {
 	log.SetFlags(0)
 
