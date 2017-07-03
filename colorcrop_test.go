@@ -56,7 +56,8 @@ func TestCropRectanle(t *testing.T) {
 			}
 			test.got = cropRectanle(image, color.RGBA{255, 255, 255, 255}, thresold, comparator)
 			if !reflect.DeepEqual(test.expected, test.got) {
-				t.Errorf("expected %v, got %v for comparator: %s, file: %s", test.expected, test.got, getFuncName(comparator), test.filename)
+				t.Errorf("expected %v, got %v for comparator: %s, file: %s",
+					test.expected, test.got, getFuncName(comparator), test.filename)
 			}
 		}
 	}
@@ -106,7 +107,8 @@ func TestCropWithComparator(t *testing.T) {
 			newImage := CropWithComparator(image, color, thresold, comparator)
 			test.gotWidth, test.gotHeight = getImageSize(newImage)
 			if test.gotWidth != test.expectedWidth || test.gotHeight != test.expectedWidth {
-				t.Errorf("expected {%d %d}, got {%d %d} for comparator: %s, file: %s", test.expectedWidth, test.expectedWidth, test.gotWidth, test.gotHeight, getFuncName(comparator), test.filename)
+				t.Errorf("expected {%d %d}, got {%d %d} for comparator: %s, file: %s",
+					test.expectedWidth, test.expectedWidth, test.gotWidth, test.gotHeight, getFuncName(comparator), test.filename)
 			}
 		}
 	}
@@ -154,7 +156,8 @@ func TestCrop(t *testing.T) {
 		newImage := Crop(image, color, thresold)
 		test.gotWidth, test.gotHeight = getImageSize(newImage)
 		if test.gotWidth != test.expectedWidth || test.gotHeight != test.expectedWidth {
-			t.Errorf("expected {%d %d}, got {%d %d} for file: %s", test.expectedWidth, test.expectedWidth, test.gotWidth, test.gotHeight, test.filename)
+			t.Errorf("expected {%d %d}, got {%d %d} for file: %s",
+				test.expectedWidth, test.expectedWidth, test.gotWidth, test.gotHeight, test.filename)
 		}
 	}
 }
