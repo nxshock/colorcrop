@@ -48,11 +48,15 @@ You may use custom comparator of colors:
         0.5,                            // with 50% thresold
         colorcrop.CmpCIE76)             // using CIE76 standart for defining color difference
 
-Available comparators are:
+List of available comparators:
 
-* ``CmpRGBComponents`` -- simple RGB components difference: ``abs(r1-r2)+abs(g1-g2)+abs(b1-b2)`` (default);
-* ``CmpEuclidean`` -- `Euclidean difference <https://en.wikipedia.org/wiki/Color_difference#Euclidean>`_;
-* ``CmpCIE76`` -- difference of two colors defined in `CIE76 standard <https://en.wikipedia.org/wiki/Color_difference#CIE76>`_.
+================  =============================================================================================================
+Comparator        Description
+================  =============================================================================================================
+CmpRGBComponents  simple RGB components difference: ``abs(r1-r2)+abs(g1-g2)+abs(b1-b2)`` (default);
+CmpEuclidean      `Euclidean difference <https://en.wikipedia.org/wiki/Color_difference#Euclidean>`_;
+CmpCIE76          difference of two colors defined in `CIE76 standard <https://en.wikipedia.org/wiki/Color_difference#CIE76>`_.
+================  =============================================================================================================
 
 Examples
 --------
