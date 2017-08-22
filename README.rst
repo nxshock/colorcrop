@@ -1,7 +1,7 @@
 colorcrop
 =========
 
-|bs| |cs| |gd|
+|bs| |cs| |rc| |gd|
 
 .. |bs| image:: https://travis-ci.org/nxshock/colorcrop.svg?branch=master
    :alt: Build Status
@@ -9,6 +9,9 @@ colorcrop
 .. |cs| image:: https://coveralls.io/repos/github/nxshock/colorcrop/badge.svg
    :alt: Coverage Status
    :target: https://coveralls.io/github/nxshock/colorcrop
+.. |rc| image:: https://goreportcard.com/badge/github.com/nxshock/colorcrop
+   :alt: Go Report Card Status
+   :target: https://goreportcard.com/report/github.com/nxshock/colorcrop
 .. |gd| image:: https://godoc.org/github.com/nxshock/colorcrop?status.svg
    :alt: GoDoc
    :target: https://godoc.org/github.com/nxshock/colorcrop
