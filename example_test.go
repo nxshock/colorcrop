@@ -20,7 +20,7 @@ func ExampleCrop() {
 	croppedImage := colorcrop.Crop(
 		sourceImage,                    // for source image
 		color.RGBA{255, 255, 255, 255}, // crop white border
-		0.5) // with 50% thresold
+		0.5)                            // with 50% thresold
 
 	// Save cropped image
 	croppedFile, _ := os.Create("cropped.png")
@@ -41,8 +41,8 @@ func ExampleCropWithComparator() {
 	croppedImage := colorcrop.CropWithComparator(
 		sourceImage,                    // for source image
 		color.RGBA{255, 255, 255, 255}, // crop white border
-		0.5,                // with 50% thresold
-		colorcrop.CmpCIE76) // using CIE76 standart for defining color difference
+		0.5,                            // with 50% thresold
+		colorcrop.CmpCIE76)             // using CIE76 standart for defining color difference
 
 	// Save cropped image
 	croppedFile, _ := os.Create("cropped.png")
